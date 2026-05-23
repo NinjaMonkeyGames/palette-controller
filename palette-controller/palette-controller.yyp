@@ -21,6 +21,13 @@
   "resources":[
     {"id":{"name":"obj_palette_controller","path":"objects/obj_palette_controller/obj_palette_controller.yy",},},
     {"id":{"name":"rm_main","path":"rooms/rm_main/rm_main.yy",},},
+    {"id":{"name":"snd_click","path":"sounds/snd_click/snd_click.yy",},},
+    {"id":{"name":"snd_disabled","path":"sounds/snd_disabled/snd_disabled.yy",},},
+    {"id":{"name":"snd_hover","path":"sounds/snd_hover/snd_hover.yy",},},
+    {"id":{"name":"snd_inset","path":"sounds/snd_inset/snd_inset.yy",},},
+    {"id":{"name":"spr_example_buttons_disabled","path":"sprites/spr_example_buttons_disabled/spr_example_buttons_disabled.yy",},},
+    {"id":{"name":"spr_example_buttons_inset","path":"sprites/spr_example_buttons_inset/spr_example_buttons_inset.yy",},},
+    {"id":{"name":"spr_example_buttons","path":"sprites/spr_example_buttons/spr_example_buttons.yy",},},
   ],
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
