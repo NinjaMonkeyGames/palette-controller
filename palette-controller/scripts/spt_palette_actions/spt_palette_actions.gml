@@ -11,16 +11,32 @@ function spt_palette_actions(_palette_id, _action_id)
 		switch _action_id
 		{
 			case 0: 
+				
+				set_palette_state(STATE.HOVER, 0);
 			
-				sprite_data[0] = disabled_sprite;
+			break;
+			
+			case 1: 
 				
-				x_scale_data[0] = disabled_scale;
-				y_scale_data[0] = disabled_scale;
+				set_palette_state(STATE.CLICK, 0);
+			
+			break;
+			
+			case 2: 
 				
-				alpha_data[0] = disabled_alpha;
-				alpha_data[0] = disabled_alpha;
+				set_palette_state(STATE.ENABLED, 2);
+			
+			break;
+			
+			case 3: 
 				
-				//show_message("")
+				set_palette_state(STATE.DISABLED, 3);
+			
+			break;
+			
+			case 4: 
+				
+				set_palette_state(STATE.INSET, 4);
 			
 			break;
 		}
