@@ -21,6 +21,7 @@
   "resources":[
     {"id":{"name":"obj_palette_controller","path":"objects/obj_palette_controller/obj_palette_controller.yy",},},
     {"id":{"name":"rm_main","path":"rooms/rm_main/rm_main.yy",},},
+    {"id":{"name":"spt_palette_actions","path":"scripts/spt_palette_actions/spt_palette_actions.yy",},},
     {"id":{"name":"snd_click","path":"sounds/snd_click/snd_click.yy",},},
     {"id":{"name":"snd_disabled","path":"sounds/snd_disabled/snd_disabled.yy",},},
     {"id":{"name":"snd_hover","path":"sounds/snd_hover/snd_hover.yy",},},

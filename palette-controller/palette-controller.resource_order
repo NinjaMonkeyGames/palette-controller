@@ -2,6 +2,7 @@
   "FolderOrderSettings":[],
   "ResourceOrderSettings":[
     {"name":"obj_palette_controller","order":1,"path":"objects/obj_palette_controller/obj_palette_controller.yy",},
+    {"name":"spt_palette_actions","order":9,"path":"scripts/spt_palette_actions/spt_palette_actions.yy",},
     {"name":"snd_click","order":5,"path":"sounds/snd_click/snd_click.yy",},
     {"name":"snd_disabled","order":7,"path":"sounds/snd_disabled/snd_disabled.yy",},
     {"name":"snd_hover","order":6,"path":"sounds/snd_hover/snd_hover.yy",},
