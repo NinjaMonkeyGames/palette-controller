@@ -12,31 +12,31 @@ function spt_palette_actions(_palette_id, _action_id)
 		{
 			case 0: 
 				
-				set_palette_state(STATE.HOVER, 0);
+				set_palette_state(STATE.DISABLED, _action_id);
 			
 			break;
 			
 			case 1: 
 				
-				set_palette_state(STATE.CLICK, 0);
+				set_palette_state(STATE.INSET, _action_id);
 			
 			break;
 			
 			case 2: 
 				
-				set_palette_state(STATE.ENABLED, 2);
+				//set_palette_state(STATE.ENABLED, 2);
 			
 			break;
 			
 			case 3: 
 				
-				set_palette_state(STATE.DISABLED, 3);
+				//set_palette_state(STATE.DISABLED, 3);
 			
 			break;
 			
 			case 4: 
 				
-				set_palette_state(STATE.INSET, 4);
+				//set_palette_state(STATE.INSET, 4);
 			
 			break;
 		}

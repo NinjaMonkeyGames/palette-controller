@@ -38,13 +38,13 @@ constructor
 	disabled_scale = _disabled_scale;
 	inset_scale = _inset_scale;
 	hover_scale = _hover_scale;
-	hover_scale = _click_scale;
+	click_scale = _click_scale;
 	
 	enabled_alpha = _enabled_alpha;
 	disabled_alpha = _disabled_alpha;
 	inset_alpha = _inset_alpha;
 	hover_alpha = _hover_alpha;
-	hover_scale = _click_alpha;
+	click_alpha = _click_alpha;
 	
 	enabled_angle = _enabled_alpha;
 	disabled_angle = _disabled_alpha;
@@ -115,6 +115,11 @@ constructor
 			}
 		}
 	}
+	
+	/// @function()				  Set_palette_state
+	/// @desc                     Set palette item appearance based on state
+	/// @param {Real} [_state]    Determine what state the palette item should be in
+	/// @param {Real}  [_id]      The ID of the palette item to change the state of
 	
 	function set_palette_state(_state, _id)
 	{
@@ -196,11 +201,29 @@ constructor
 	
 	static step = function()
 	{
-		if mouse_check_button(mb_left)
+		var _pid = get_palette_id();
+		
+		if _pid != undefined
 		{
+			if sprite_data[_pid] != disabled_sprite && sprite_data[_pid] != inset_sprite
+			{
+				set_palette_state(STATE.HOVER, _pid);
+			}
+			
+			if mouse_check_button(mb_left)
+			{
+				set_palette_state(STATE.CLICK, _pid);
+				spt_palette_actions(0, _pid);
+			}
+		}
+			else
+		{ 
 			for (var _i = 0; _i < palette_item_qty; ++_i)
 			{
-				set_palette_state(STATE.DISABLED, get_palette_id());
+				if sprite_data[_i] != disabled_sprite && sprite_data[_i] != inset_sprite
+				{
+					set_palette_state(STATE.ENABLED, _i);
+				}
 			}
 		}
 	}
