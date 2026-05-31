@@ -6,9 +6,8 @@
 ![Signed Commits](https://img.shields.io/badge/commits-signed-blue.svg)
 ![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)
 ![Conventional Commits](https://img.shields.io/badge/commits-conventional-brightgreen.svg)
-![GitHub Pre-Release](https://img.shields.io/github/v/release/ninjamonkeygames/markdownlint-cli2-ci-workflow-docker-container?include_prereleases)
-![Docker Automated build](https://img.shields.io/docker/automated/monkeyknuckles/markdownlint-cli2-ci)
-![GitHub commit check runs](https://img.shields.io/github/check-runs/ninjamonkeygames/markdownlint-cli2-ci-workflow-docker-container/master)
+![GitHub Pre-Release](https://img.shields.io/github/v/release/ninjamonkeygames/palette-controller?include_prereleases)
+![GitHub commit check runs](https://img.shields.io/github/check-runs/ninjamonkeygames/palette-controller/master)
 
 ---
 
