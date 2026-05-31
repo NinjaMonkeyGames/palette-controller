@@ -16,11 +16,11 @@ function palette
 (	
 	_enabled_sprite = spr_example_buttons, _disabled_sprite = spr_example_buttons_disabled, _inset_sprite = spr_example_buttons_inset, _hover_sprite = spr_example_buttons, _click_sprite = spr_example_buttons,
 	_enabled_sound = snd_hover, _disabled_sound = snd_disabled, _inset_sound = snd_inset, _hover_sound = snd_click, 
-	_enabled_scale = 0.25, _disabled_scale = 0.25, _inset_scale = 0.23, _hover_scale = 0.24, _click_scale = 0.22,
+	_enabled_scale = 0.25, _disabled_scale = 0.25, _inset_scale = 0.20, _hover_scale = 0.24, _click_scale = 0.22,
 	_enabled_angle = 0, _disabled_angle = 0, _inset_angle = 0, _hover_angle = 0, _click_angle = 0,
 	_enabled_alpha = 1, _disabled_alpha = 0.9, _inset_alpha = 1, _hover_alpha = 0.99, _click_alpha = 1,
 	_x_pos = 16, _y_pos = 16,
-	_x_gap = 8, _y_gap = 8,
+	_x_gap = 32, _y_gap = 32,
 	_max_row_qty = 6
 ) 
 
@@ -91,6 +91,8 @@ constructor
 			
 			angle_data[_i] = enabled_angle;
 			alpha_data[_i] = enabled_alpha;
+			
+			state_data[_i] = STATE.ENABLED;
 		}
 	}
 	
@@ -126,6 +128,7 @@ constructor
 		enum STATE
 		{
 		    HOVER,
+			HOVER_INSET,
 			CLICK,
 			ENABLED,
 			DISABLED,
@@ -136,61 +139,80 @@ constructor
 		{
 			case STATE.HOVER:
 			
-					sprite_data[_id] = hover_sprite;
-					x_scale_data[_id] = hover_scale;
-					y_scale_data[_id] = hover_scale;
-					sprite_width_data[_id] = sprite_get_width(sprite_data[_id]) * x_scale_data[_id];
-					sprite_height_data[_id] = sprite_get_height(sprite_data[_id]) * y_scale_data[_id];
-					angle_data[_id] = hover_angle;
-					alpha_data[_id] = hover_alpha;
+				sprite_data[_id] = hover_sprite;
+				x_scale_data[_id] = hover_scale;
+				y_scale_data[_id] = hover_scale;
+				sprite_width_data[_id] = sprite_get_width(sprite_data[_id]) * x_scale_data[_id];
+				sprite_height_data[_id] = sprite_get_height(sprite_data[_id]) * y_scale_data[_id];
+				angle_data[_id] = hover_angle;
+				alpha_data[_id] = hover_alpha;
+				state_data[_id] = STATE.HOVER;
+			
+			break;
+			
+			case STATE.HOVER_INSET:
+			
+				sprite_data[_id] = inset_sprite;
+				x_scale_data[_id] = hover_scale;
+				y_scale_data[_id] = hover_scale;
+				sprite_width_data[_id] = sprite_get_width(sprite_data[_id]) * x_scale_data[_id];
+				sprite_height_data[_id] = sprite_get_height(sprite_data[_id]) * y_scale_data[_id];
+				angle_data[_id] = hover_angle;
+				alpha_data[_id] = hover_alpha;
+				state_data[_id] = STATE.HOVER_INSET;
+			
 			
 			break;
 			
 			case STATE.CLICK:
 			
-					sprite_data[_id] = click_sprite;
-					x_scale_data[_id] = click_scale;
-					y_scale_data[_id] = click_scale;
-					sprite_width_data[_id] = sprite_get_width(sprite_data[_id]) * x_scale_data[_id];
-					sprite_height_data[_id] = sprite_get_height(sprite_data[_id]) * y_scale_data[_id];
-					angle_data[_id] = click_angle;
-					alpha_data[_id] = click_alpha;
+				sprite_data[_id] = click_sprite;
+				x_scale_data[_id] = click_scale;
+				y_scale_data[_id] = click_scale;
+				sprite_width_data[_id] = sprite_get_width(sprite_data[_id]) * x_scale_data[_id];
+				sprite_height_data[_id] = sprite_get_height(sprite_data[_id]) * y_scale_data[_id];
+				angle_data[_id] = click_angle;
+				alpha_data[_id] = click_alpha;
+				state_data[_id] = STATE.CLICK;
 			
 			break;
 			
 			case STATE.ENABLED:
 			
-					sprite_data[_id] = enabled_sprite;
-					x_scale_data[_id] = enabled_scale;
-					y_scale_data[_id] = enabled_scale;
-					sprite_width_data[_id] = sprite_get_width(sprite_data[_id]) * x_scale_data[_id];
-					sprite_height_data[_id] = sprite_get_height(sprite_data[_id]) * y_scale_data[_id];
-					angle_data[_id] = enabled_angle;
-					alpha_data[_id] = enabled_alpha;
+				sprite_data[_id] = enabled_sprite;
+				x_scale_data[_id] = enabled_scale;
+				y_scale_data[_id] = enabled_scale;
+				sprite_width_data[_id] = sprite_get_width(sprite_data[_id]) * x_scale_data[_id];
+				sprite_height_data[_id] = sprite_get_height(sprite_data[_id]) * y_scale_data[_id];
+				angle_data[_id] = enabled_angle;
+				alpha_data[_id] = enabled_alpha;
+				state_data[_id] = STATE.ENABLED;
 			
 			break;
 			
 			case STATE.DISABLED:
 			
-					sprite_data[_id] = disabled_sprite;
-					x_scale_data[_id] = disabled_scale;
-					y_scale_data[_id] = disabled_scale;
-					sprite_width_data[_id] = sprite_get_width(sprite_data[_id]) * x_scale_data[_id];
-					sprite_height_data[_id] = sprite_get_height(sprite_data[_id]) * y_scale_data[_id];
-					angle_data[_id] = disabled_angle;
-					alpha_data[_id] = disabled_alpha;
+				sprite_data[_id] = disabled_sprite;
+				x_scale_data[_id] = disabled_scale;
+				y_scale_data[_id] = disabled_scale;
+				sprite_width_data[_id] = sprite_get_width(sprite_data[_id]) * x_scale_data[_id];
+				sprite_height_data[_id] = sprite_get_height(sprite_data[_id]) * y_scale_data[_id];
+				angle_data[_id] = disabled_angle;
+				alpha_data[_id] = disabled_alpha;
+				state_data[_id] = STATE.DISABLED;
 			
 			break;
 			
 			case STATE.INSET:
 			
-					sprite_data[_id] = inset_sprite;
-					x_scale_data[_id] = inset_scale;
-					y_scale_data[_id] = inset_scale;
-					sprite_width_data[_id] = sprite_get_width(sprite_data[_id]) * x_scale_data[_id];
-					sprite_height_data[_id] = sprite_get_height(sprite_data[_id]) * y_scale_data[_id];
-					angle_data[_id] = inset_angle;
-					alpha_data[_id] = inset_alpha;
+				sprite_data[_id] = inset_sprite;
+				x_scale_data[_id] = inset_scale;
+				y_scale_data[_id] = inset_scale;
+				sprite_width_data[_id] = sprite_get_width(sprite_data[_id]) * x_scale_data[_id];
+				sprite_height_data[_id] = sprite_get_height(sprite_data[_id]) * y_scale_data[_id];
+				angle_data[_id] = inset_angle;
+				alpha_data[_id] = inset_alpha;
+				state_data[_id] = STATE.INSET;
 			
 			break;
 		}
@@ -203,31 +225,37 @@ constructor
 	{
 		var _pid = get_palette_id();
 		
-		if _pid != undefined
+		
+		for (var _i = 0; _i < palette_item_qty; ++_i)
 		{
-			if sprite_data[_pid] != disabled_sprite && sprite_data[_pid] != inset_sprite
+			test = state_data[_i];
+			
+			if state_data[_i] != STATE.DISABLED
 			{
-				set_palette_state(STATE.HOVER, _pid);
+				set_palette_state(STATE.ENABLED, _i);
 			}
 			
-			if mouse_check_button(mb_left)
-			{
-				set_palette_state(STATE.CLICK, _pid);
-				spt_palette_actions(0, _pid);
-			}
 		}
-			else
-		{ 
-			for (var _i = 0; _i < palette_item_qty; ++_i)
+		
+		if _pid != undefined
+		{
+			if state_data[_pid] != STATE.DISABLED
 			{
-				if sprite_data[_i] != disabled_sprite && sprite_data[_i] != inset_sprite
+				set_palette_state(STATE.HOVER, _pid);
+			
+				if mouse_check_button(mb_left)
 				{
-					set_palette_state(STATE.ENABLED, _i);
+					set_palette_state(STATE.CLICK, _pid);
+				}
+				
+				if mouse_check_button_pressed(mb_left)
+				{
+					spt_palette_actions(0, _pid);
 				}
 			}
 		}
 	}
-	
+		
 	/// @function draw
     /// @description Execute draw code for palette constructor instance
 	
@@ -236,7 +264,7 @@ constructor
 	
 		for (var _i = 0; _i < palette_item_qty; ++_i)
 		{
-			draw_sprite_ext(sprite_data[_i], _i, x_pos_data[_i], y_pos_data[_i], x_scale_data[_i], y_scale_data[_i], angle_data[_i], c_white, alpha_data[_i]);
+			draw_sprite_ext(sprite_data[_i], sprite_index_data[_i], x_pos_data[_i], y_pos_data[_i], x_scale_data[_i], y_scale_data[_i], angle_data[_i], c_white, alpha_data[_i]);
 		}
 	}
 	
