@@ -33,13 +33,26 @@ function spt_palette_actions(_palette_id, _action_id)
 			
 			case 3: 
 				
-				//set_palette_state(STATE.DISABLED, 3);
+				set_palette_state(STATE.ENABLED, _action_id);
 			
 			break;
 			
 			case 30: 
+				
+				if inset_data[30] == false
+				{
+					inset_data[30] = true;
+				}
+					else
+				{
+					inset_data[30] = false;
+				}
+			
+			break;
+			
+			case 34: 
 
-				set_palette_state(STATE.INSET, _action_id);
+				game_end(0);
 				
 			
 			break;

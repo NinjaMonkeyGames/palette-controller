@@ -14,18 +14,43 @@ global.palette_list = ds_list_create();
 
 function palette
 (	
-	_enabled_sprite = spr_example_buttons, _disabled_sprite = spr_example_buttons_disabled, _inset_sprite = spr_example_buttons_inset, _hover_sprite = spr_example_buttons, _click_sprite = spr_example_buttons,
-	_enabled_sound = snd_hover, _disabled_sound = snd_disabled, _inset_sound = snd_inset, _hover_sound = snd_click, 
-	_enabled_scale = 0.25, _disabled_scale = 0.25, _inset_scale = 0.20, _hover_scale = 0.24, _click_scale = 0.22,
-	_enabled_angle = 0, _disabled_angle = 0, _inset_angle = 0, _hover_angle = 0, _click_angle = 0,
-	_enabled_alpha = 1, _disabled_alpha = 0.9, _inset_alpha = 1, _hover_alpha = 0.99, _click_alpha = 1,
+	_enabled_sprite = spr_example_buttons, 
+	_disabled_sprite = spr_example_buttons_disabled, 
+	_inset_sprite = spr_example_buttons_inset, 
+	_hover_sprite = spr_example_buttons, 
+	_click_sprite = spr_example_buttons,
+	
+	_enabled_sound = snd_hover, 
+	_disabled_sound = snd_disabled, 
+	_inset_sound = snd_inset, 
+	_hover_sound = snd_click, 
+	
+	_enabled_scale = 0.5, 
+	_disabled_scale = 0.5, 
+	_inset_scale = 0.44, 
+	_hover_scale = 0.48, 
+	_click_scale = 0.40,
+	
+	_enabled_angle = 0, 
+	_disabled_angle = 0, 
+	_inset_angle = 0, 
+	_hover_angle = 0, 
+	_click_angle = 0,
+	
+	_enabled_alpha = 1, 
+	_disabled_alpha = 0.9, 
+	_inset_alpha = 1, 
+	_hover_alpha = 0.99, 
+	_click_alpha = 1,
+	
 	_x_pos = 16, _y_pos = 16,
 	_x_gap = 32, _y_gap = 32,
+	
 	_max_row_qty = 6
 ) 
 
 constructor
-{	
+{
 	// Inherited Values
 	
 	enabled_sprite = _enabled_sprite;
@@ -33,6 +58,7 @@ constructor
 	inset_sprite = _inset_sprite;
 	hover_sprite = _hover_sprite;
 	click_sprite = _click_sprite;
+	
 	
 	enabled_scale = _enabled_scale;
 	disabled_scale = _disabled_scale;
@@ -93,7 +119,12 @@ constructor
 			alpha_data[_i] = enabled_alpha;
 			
 			state_data[_i] = STATE.ENABLED;
+			inset_data[_i] = false;
 		}
+		
+		inset_data[30] = true;
+		set_palette_state(STATE.INSET, 30);
+		
 	}
 	
 	/// @function()				  get_palette_id
@@ -130,6 +161,7 @@ constructor
 		    HOVER,
 			HOVER_INSET,
 			CLICK,
+			CLICK_INSET,
 			ENABLED,
 			DISABLED,
 			INSET,
@@ -147,6 +179,7 @@ constructor
 				angle_data[_id] = hover_angle;
 				alpha_data[_id] = hover_alpha;
 				state_data[_id] = STATE.HOVER;
+
 			
 			break;
 			
@@ -160,6 +193,7 @@ constructor
 				angle_data[_id] = hover_angle;
 				alpha_data[_id] = hover_alpha;
 				state_data[_id] = STATE.HOVER_INSET;
+
 			
 			
 			break;
@@ -174,6 +208,21 @@ constructor
 				angle_data[_id] = click_angle;
 				alpha_data[_id] = click_alpha;
 				state_data[_id] = STATE.CLICK;
+
+			
+			break;
+			
+			case STATE.CLICK_INSET:
+			
+				sprite_data[_id] = inset_sprite;
+				x_scale_data[_id] = click_scale;
+				y_scale_data[_id] = click_scale;
+				sprite_width_data[_id] = sprite_get_width(sprite_data[_id]) * x_scale_data[_id];
+				sprite_height_data[_id] = sprite_get_height(sprite_data[_id]) * y_scale_data[_id];
+				angle_data[_id] = inset_angle;
+				alpha_data[_id] = inset_alpha;
+				state_data[_id] = STATE.CLICK_INSET;
+
 			
 			break;
 			
@@ -187,6 +236,7 @@ constructor
 				angle_data[_id] = enabled_angle;
 				alpha_data[_id] = enabled_alpha;
 				state_data[_id] = STATE.ENABLED;
+
 			
 			break;
 			
@@ -200,6 +250,7 @@ constructor
 				angle_data[_id] = disabled_angle;
 				alpha_data[_id] = disabled_alpha;
 				state_data[_id] = STATE.DISABLED;
+
 			
 			break;
 			
@@ -213,6 +264,7 @@ constructor
 				angle_data[_id] = inset_angle;
 				alpha_data[_id] = inset_alpha;
 				state_data[_id] = STATE.INSET;
+
 			
 			break;
 		}
@@ -225,33 +277,42 @@ constructor
 	{
 		var _pid = get_palette_id();
 		
-		
 		for (var _i = 0; _i < palette_item_qty; ++_i)
 		{
-			test = state_data[_i];
-			
-			if state_data[_i] != STATE.DISABLED
+			if inset_data[_i] != true
 			{
-				set_palette_state(STATE.ENABLED, _i);
+				set_palette_state(STATE.ENABLED, _i)
 			}
-			
+				else
+			{
+				set_palette_state(STATE.INSET, _i)
+			}
 		}
 		
 		if _pid != undefined
 		{
-			if state_data[_pid] != STATE.DISABLED
+			if inset_data[_pid] == false
 			{
 				set_palette_state(STATE.HOVER, _pid);
-			
+				
 				if mouse_check_button(mb_left)
 				{
 					set_palette_state(STATE.CLICK, _pid);
 				}
-				
-				if mouse_check_button_pressed(mb_left)
+			}
+				else
+			{	
+				if mouse_check_button(mb_left)
 				{
-					spt_palette_actions(0, _pid);
+					set_palette_state(STATE.CLICK_INSET, _pid);
 				}
+				
+				set_palette_state(STATE.HOVER_INSET, _pid);
+			}
+			
+			if mouse_check_button_pressed(mb_left)
+			{
+				spt_palette_actions(0, _pid);
 			}
 		}
 	}
