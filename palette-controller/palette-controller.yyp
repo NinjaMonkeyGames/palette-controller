@@ -26,6 +26,7 @@
     {"id":{"name":"snd_disabled","path":"sounds/snd_disabled/snd_disabled.yy",},},
     {"id":{"name":"snd_hover","path":"sounds/snd_hover/snd_hover.yy",},},
     {"id":{"name":"snd_inset","path":"sounds/snd_inset/snd_inset.yy",},},
+    {"id":{"name":"snd_pop","path":"sounds/snd_pop/snd_pop.yy",},},
     {"id":{"name":"spr_example_buttons_disabled","path":"sprites/spr_example_buttons_disabled/spr_example_buttons_disabled.yy",},},
     {"id":{"name":"spr_example_buttons_inset","path":"sprites/spr_example_buttons_inset/spr_example_buttons_inset.yy",},},
     {"id":{"name":"spr_example_buttons","path":"sprites/spr_example_buttons/spr_example_buttons.yy",},},

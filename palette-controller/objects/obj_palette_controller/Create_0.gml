@@ -20,10 +20,9 @@ function palette
 	_hover_sprite = spr_example_buttons, 
 	_click_sprite = spr_example_buttons,
 	
-	_enabled_sound = snd_hover, 
+	_click_sound = snd_click, 
 	_disabled_sound = snd_disabled, 
-	_inset_sound = snd_inset, 
-	_hover_sound = snd_click, 
+	_hover_sound = snd_hover, 
 	
 	_enabled_scale = 0.5, 
 	_disabled_scale = 0.5, 
@@ -58,8 +57,7 @@ constructor
 	inset_sprite = _inset_sprite;
 	hover_sprite = _hover_sprite;
 	click_sprite = _click_sprite;
-	
-	
+
 	enabled_scale = _enabled_scale;
 	disabled_scale = _disabled_scale;
 	inset_scale = _inset_scale;
@@ -78,14 +76,18 @@ constructor
 	hover_angle = _hover_alpha;
 	click_angle = _click_angle;
 	
-	click_sound = _enabled_scale;
-	hover_sound = _disabled_scale;
-	disabled_sound = _inset_scale;
+	click_sound = _click_sound;
+	hover_sound = _hover_sound;
+	disabled_sound = _disabled_sound;
+	
+	x_pos = _x_pos;
+	y_pos = _y_pos;
 	
 	x_gap = _x_gap;
 	y_gap = _y_gap;
 	
 	max_row_qty = _max_row_qty;
+	play_sound = true;
 	
 	// Calculated Values
 	
@@ -112,8 +114,8 @@ constructor
 			sprite_width_data[_i] = sprite_get_width(sprite_data[_i]) * x_scale_data[_i];
 			sprite_height_data[_i] = sprite_get_height(sprite_data[_i]) * y_scale_data[_i];
 			
-			x_pos_data[_i] = (_i % max_row_qty) * (sprite_width_data[_i] + x_gap);
-			y_pos_data[_i] = floor(_i / max_row_qty) * (sprite_height_data[_i] + y_gap);
+			x_pos_data[_i] = x_pos + (_i % max_row_qty) * (sprite_width_data[_i] + x_gap);
+			y_pos_data[_i] = y_pos + floor(_i / max_row_qty) * (sprite_height_data[_i] + y_gap);
 			
 			angle_data[_i] = enabled_angle;
 			alpha_data[_i] = enabled_alpha;
@@ -121,10 +123,6 @@ constructor
 			state_data[_i] = STATE.ENABLED;
 			inset_data[_i] = false;
 		}
-		
-		inset_data[30] = true;
-		set_palette_state(STATE.INSET, 30);
-		
 	}
 	
 	/// @function()				  get_palette_id
@@ -179,7 +177,6 @@ constructor
 				angle_data[_id] = hover_angle;
 				alpha_data[_id] = hover_alpha;
 				state_data[_id] = STATE.HOVER;
-
 			
 			break;
 			
@@ -193,8 +190,6 @@ constructor
 				angle_data[_id] = hover_angle;
 				alpha_data[_id] = hover_alpha;
 				state_data[_id] = STATE.HOVER_INSET;
-
-			
 			
 			break;
 			
@@ -236,7 +231,7 @@ constructor
 				angle_data[_id] = enabled_angle;
 				alpha_data[_id] = enabled_alpha;
 				state_data[_id] = STATE.ENABLED;
-
+				
 			
 			break;
 			
@@ -250,7 +245,6 @@ constructor
 				angle_data[_id] = disabled_angle;
 				alpha_data[_id] = disabled_alpha;
 				state_data[_id] = STATE.DISABLED;
-
 			
 			break;
 			
@@ -265,7 +259,6 @@ constructor
 				alpha_data[_id] = inset_alpha;
 				state_data[_id] = STATE.INSET;
 
-			
 			break;
 		}
 	}
@@ -277,23 +270,49 @@ constructor
 	{
 		var _pid = get_palette_id();
 		
+		if _pid == undefined
+		{
+			window_set_cursor(cr_arrow);
+			play_sound = true;
+		}
+			else
+		{
+			window_set_cursor(cr_handpoint);
+		}
+		
 		for (var _i = 0; _i < palette_item_qty; ++_i)
 		{
-			if inset_data[_i] != true
+			if state_data[_i] != STATE.DISABLED
 			{
-				set_palette_state(STATE.ENABLED, _i)
+				if inset_data[_i] != true
+				{
+					set_palette_state(STATE.ENABLED, _i)
+				}
+					else
+				{
+					set_palette_state(STATE.INSET, _i)
+				}
 			}
 				else
 			{
-				set_palette_state(STATE.INSET, _i)
+				if mouse_check_button_pressed(mb_left)
+				{
+					audio_play_sound(disabled_sound, 1, false);
+				}
 			}
 		}
 		
-		if _pid != undefined
+		if _pid != undefined && state_data[_pid] != STATE.DISABLED
 		{
 			if inset_data[_pid] == false
 			{
 				set_palette_state(STATE.HOVER, _pid);
+				
+				if play_sound == true
+				{
+					audio_play_sound(hover_sound, 1, false);
+					play_sound = false;
+				}
 				
 				if mouse_check_button(mb_left)
 				{
@@ -313,6 +332,8 @@ constructor
 			if mouse_check_button_pressed(mb_left)
 			{
 				spt_palette_actions(0, _pid);
+				
+				audio_play_sound(click_sound, 1, false);
 			}
 		}
 	}
@@ -322,7 +343,6 @@ constructor
 	
 	static draw = function()
 	{
-	
 		for (var _i = 0; _i < palette_item_qty; ++_i)
 		{
 			draw_sprite_ext(sprite_data[_i], sprite_index_data[_i], x_pos_data[_i], y_pos_data[_i], x_scale_data[_i], y_scale_data[_i], angle_data[_i], c_white, alpha_data[_i]);
@@ -335,4 +355,4 @@ constructor
 }
 
 
-new palette();
+test = new palette();

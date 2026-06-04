@@ -1,6 +1,6 @@
 {
   "$GMSound":"v2",
-  "%Name":"snd_disabled",
+  "%Name":"snd_pop",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -12,7 +12,7 @@
   "conversionMode":0,
   "duration":0.25,
   "exportDir":"",
-  "name":"snd_disabled",
+  "name":"snd_pop",
   "parent":{
     "name":"palette-controller",
     "path":"palette-controller.yyp",
@@ -21,6 +21,6 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"snd_disabled.wav",
+  "soundFile":"snd_pop.wav",
   "volume":1.0,
 }
