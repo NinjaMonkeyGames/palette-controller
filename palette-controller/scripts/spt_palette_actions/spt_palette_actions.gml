@@ -39,13 +39,13 @@ function spt_palette_actions(_palette_id, _action_id)
 			
 			case 30: 
 				
-				if inset_data[30] == false
+				if sprite_data[_action_id] == data[STATE.INSET][PROPERTY.SPRITE]
 				{
-					inset_data[30] = true;
+					set_palette_state(STATE.ENABLED, 30);
 				}
 					else
 				{
-					inset_data[30] = false;
+					set_palette_state(STATE.INSET, 30);
 				}
 			
 			break;
