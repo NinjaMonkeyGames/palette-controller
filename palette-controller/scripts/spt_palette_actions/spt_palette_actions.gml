@@ -39,14 +39,7 @@ function spt_palette_actions(_palette_id, _action_id)
 			
 			case 30: 
 				
-				if sprite_data[_action_id] == data[STATE.INSET][PROPERTY.SPRITE]
-				{
-					set_palette_state(STATE.ENABLED, 30);
-				}
-					else
-				{
-					set_palette_state(STATE.INSET, 30);
-				}
+				sprite_inset_enabled[_action_id] = true;
 			
 			break;
 			

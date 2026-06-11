@@ -34,6 +34,8 @@ function spt_palette_properties(_id)
 			cursor_default = window_get_cursor();
 			cursor_hover = cr_handpoint;
 			
+			sprite_inset_enabled[30] = true;
+			
 			data[STATE.ENABLED][PROPERTY.SPRITE] = spr_example_buttons;
 			data[STATE.ENABLED_HOVER][PROPERTY.SPRITE] = spr_example_buttons;
 			data[STATE.ENABLED_CLICK][PROPERTY.SPRITE] = spr_example_buttons;

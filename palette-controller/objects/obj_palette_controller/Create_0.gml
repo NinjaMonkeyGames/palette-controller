@@ -17,7 +17,7 @@ function palette
 
 constructor
 {
-	run_once = true;
+	//run_once = true;
 	
 	spt_palette_properties(_palette_data);
 	
@@ -64,6 +64,10 @@ constructor
 		sprite_alpha_data[_id] = data[_state][PROPERTY.ALPHA];
 		
 		sprite_sound_data[_id] = data[_state][PROPERTY.SOUND];
+		sprite_inset_enabled[_id] = false;
+		
+		
+		show_debug_message(sprite_sound_data[_id]);
 
 	}
 	
@@ -94,36 +98,48 @@ constructor
 	
 	static step = function()
 	{
-		//show_debug_message(run_once);
 		var _pid = get_palette_id();	
 		
 		if _pid != undefined // If palette item is selected
-		{
-			if run_once == true
-			{
-			audio_play_sound(snd_hover, 0, false);
-			}
-			run_once = false;
+		{			
 			window_set_cursor(cursor_hover);
 			
 			if sprite_data[_pid] == data[STATE.ENABLED, PROPERTY.SPRITE] then set_palette_state(STATE.ENABLED_HOVER, _pid);
 			if sprite_data[_pid] == data[STATE.INSET, PROPERTY.SPRITE] then set_palette_state(STATE.INSET, _pid);
 			
+			
+
 			if mouse_check_button(mb_left)
 			{
 				if sprite_data[_pid] == data[STATE.ENABLED, PROPERTY.SPRITE] then set_palette_state(STATE.ENABLED_CLICK, _pid);
 				if sprite_data[_pid] == data[STATE.INSET, PROPERTY.SPRITE] then set_palette_state(STATE.INSET_CLICK, _pid);
 			}
-
 			
 			if mouse_check_button_pressed(mb_left)
 			{
 				spt_palette_actions(PALETTE.EXAMPLE, _pid);
+				if _pid != undefined then audio_play_sound(sprite_sound_data[STATE.ENABLED_CLICK], 0, false);
+				
+				if sprite_inset_enabled[_pid] == true
+				{
+					if sprite_data[_pid] == data[STATE.ENABLED, PROPERTY.SPRITE]
+					{
+						set_palette_state(STATE.INSET, _pid);
+					}
+				
+						else
+					{
+						if sprite_data[_pid] != data[STATE.DISABLED, PROPERTY.SPRITE]
+						{
+							set_palette_state(STATE.ENABLED, _pid);
+						}
+					}
+				}
 			}
 		}
 			else
 		{
-			run_once = true;
+			//run_once = true;
 			
 			for (var _i = 0; _i < palette_item_qty; ++_i)
 			{
