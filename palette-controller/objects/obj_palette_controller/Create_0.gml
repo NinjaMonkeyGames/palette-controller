@@ -17,7 +17,7 @@ function palette
 
 constructor
 {
-	//run_once = true;
+	play_sound = undefined;
 	
 	spt_palette_properties(_palette_data);
 	
@@ -67,7 +67,8 @@ constructor
 		sprite_inset_enabled[_id] = false;
 		
 		
-		show_debug_message(sprite_sound_data[_id]);
+		
+	
 
 	}
 	
@@ -92,7 +93,7 @@ constructor
 			}
 		}
 	}
-	
+
 	/// @function step
     /// @description Execute step code for palette constructor instance
 	
@@ -101,24 +102,33 @@ constructor
 		var _pid = get_palette_id();	
 		
 		if _pid != undefined // If palette item is selected
-		{			
+		{	
 			window_set_cursor(cursor_hover);
 			
+			
 			if sprite_data[_pid] == data[STATE.ENABLED, PROPERTY.SPRITE] then set_palette_state(STATE.ENABLED_HOVER, _pid);
-			if sprite_data[_pid] == data[STATE.INSET, PROPERTY.SPRITE] then set_palette_state(STATE.INSET, _pid);
+			if sprite_data[_pid] == data[STATE.DISABLED, PROPERTY.SPRITE] then set_palette_state(STATE.DISABLED_HOVER, _pid);
+			if sprite_data[_pid] == data[STATE.INSET, PROPERTY.SPRITE] then set_palette_state(STATE.INSET_HOVER, _pid);
 			
-			
+			if play_sound == undefined
+			{
+				audio_play_sound(sprite_sound_data[_pid], 0, false);
+				
+				play_sound = sprite_sound_data[_pid];
+			}
 
 			if mouse_check_button(mb_left)
 			{
 				if sprite_data[_pid] == data[STATE.ENABLED, PROPERTY.SPRITE] then set_palette_state(STATE.ENABLED_CLICK, _pid);
+				if sprite_data[_pid] == data[STATE.DISABLED, PROPERTY.SPRITE] then set_palette_state(STATE.DISABLED_CLICK, _pid);
 				if sprite_data[_pid] == data[STATE.INSET, PROPERTY.SPRITE] then set_palette_state(STATE.INSET_CLICK, _pid);
 			}
 			
 			if mouse_check_button_pressed(mb_left)
 			{
+				audio_play_sound(sprite_sound_data[_pid], 0, false);
+				
 				spt_palette_actions(PALETTE.EXAMPLE, _pid);
-				if _pid != undefined then audio_play_sound(sprite_sound_data[STATE.ENABLED_CLICK], 0, false);
 				
 				if sprite_inset_enabled[_pid] == true
 				{
@@ -133,13 +143,18 @@ constructor
 						{
 							set_palette_state(STATE.ENABLED, _pid);
 						}
+							else
+						{
+							set_palette_state(STATE.DISABLED, _pid);
+						}
+						
 					}
 				}
 			}
 		}
 			else
 		{
-			//run_once = true;
+			play_sound = undefined;
 			
 			for (var _i = 0; _i < palette_item_qty; ++_i)
 			{

@@ -34,7 +34,8 @@ function spt_palette_properties(_id)
 			cursor_default = window_get_cursor();
 			cursor_hover = cr_handpoint;
 			
-			sprite_inset_enabled[30] = true;
+			sprite_inset_enabled[_id] = false;
+			sprite_inset_enabled[30] = false;
 			
 			data[STATE.ENABLED][PROPERTY.SPRITE] = spr_example_buttons;
 			data[STATE.ENABLED_HOVER][PROPERTY.SPRITE] = spr_example_buttons;
@@ -106,7 +107,7 @@ function spt_palette_properties(_id)
 			
 			data[STATE.INSET][PROPERTY.SOUND] = undefined;
 			data[STATE.INSET_HOVER][PROPERTY.SOUND] = snd_hover;
-			data[STATE.INSET_CLICK][PROPERTY.SOUND] = snd_click;
+			data[STATE.INSET_CLICK][PROPERTY.SOUND] = snd_pop;
 			
 		break;
 	}
