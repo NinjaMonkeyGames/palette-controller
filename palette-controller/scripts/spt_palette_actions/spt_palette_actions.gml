@@ -19,8 +19,7 @@ function spt_palette_actions(_palette_id, _action_id)
 			
 			case 1: 
 				
-				set_palette_state(STATE.INSET, _action_id);
-				state_data[_action_id] = STATE.INSET;
+
 				
 
 			break;
@@ -39,7 +38,7 @@ function spt_palette_actions(_palette_id, _action_id)
 			
 			case 30: 
 				
-				sprite_inset_enabled[_action_id] = true;
+
 			
 			break;
 			
