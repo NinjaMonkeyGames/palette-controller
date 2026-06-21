@@ -92,7 +92,7 @@ function palette(_palette_data = PALETTE.EXAMPLE) constructor
 			var _x1 = palette_sprite_x_pos_data[_i];
 			var _y1 = palette_sprite_y_pos_data[_i];
 			var _x2 = _x1 + palette_sprite_width_scale_data[_i];
-			var _y2 = _y1 + palette_sprite_width_scale_data[_i];
+			var _y2 = _y1 + palette_sprite_height_scale_data[_i];
 
 		    if point_in_rectangle(mouse_x, mouse_y, _x1, _y1, _x2, _y2)
 			{
@@ -114,7 +114,7 @@ function palette(_palette_data = PALETTE.EXAMPLE) constructor
 		{
 				if  state_data[_id] == STATE.ENABLED	|| state_data[_id] == STATE.ENABLED_CLICK then state_data[_id] = STATE.ENABLED_HOVER;
 				if  state_data[_id] == STATE.DISABLED	|| state_data[_id] == STATE.DISABLED_CLICK then state_data[_id] = STATE.DISABLED_HOVER;
-				if  state_data[_id] == STATE.INSET			|| state_data[_id] =  STATE.INSET_CLICK then state_data[_id]	= STATE.INSET_HOVER;
+				if  state_data[_id] == STATE.INSET			|| state_data[_id] ==  STATE.INSET_CLICK then state_data[_id]	= STATE.INSET_HOVER;
 					
 			if mouse_check_button(mb_left) // Click
 			{
