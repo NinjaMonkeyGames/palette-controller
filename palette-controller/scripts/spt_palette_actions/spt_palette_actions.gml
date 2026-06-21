@@ -12,7 +12,6 @@ function spt_palette_actions(_palette_id, _action_id)
 		{
 			case 0: 
 				
-				set_palette_state(STATE.DISABLED, _action_id);
 				
 			
 			break;
@@ -26,13 +25,13 @@ function spt_palette_actions(_palette_id, _action_id)
 			
 			case 2: 
 				
-				//set_palette_state(STATE.ENABLED, 2);
+
 			
 			break;
 			
 			case 3: 
 				
-				set_palette_state(STATE.ENABLED, _action_id);
+				
 			
 			break;
 			
