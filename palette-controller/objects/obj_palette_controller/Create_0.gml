@@ -52,32 +52,48 @@ function palette(_palette_data = PALETTE.EXAMPLE) constructor
 	
 	function set_palette_state(_state , _id)
 	{
-				palette_sprite_data[_id]							= data[_state][PROPERTY.SPRITE];
-			    palette_sprite_index_data[_id]				= _id;
-    
-			    palette_sprite_x_scale_data[_id]				= data[_state][PROPERTY.X_SCALE];
-			    palette_sprite_y_scale_data[_id]				= data[_state][PROPERTY.Y_SCALE];
-    
-			    palette_sprite_width_raw_data[_id]        = sprite_get_width(palette_sprite_data[_id]);
-			    palette_sprite_height_raw_data[_id]       = sprite_get_height(palette_sprite_data[_id]);
-    
-			    palette_sprite_width_scale_data[_id]      = palette_sprite_width_raw_data[_id] * palette_sprite_x_scale_data[_id];
-			    palette_sprite_height_scale_data[_id]     = palette_sprite_height_raw_data[_id] * palette_sprite_y_scale_data[_id];
-    
-			    var _base_x_scale										= data[STATE.ENABLED][PROPERTY.X_SCALE];
-			    var _base_y_scale										= data[STATE.ENABLED][PROPERTY.Y_SCALE];
-    
-			    var _cell_width											= palette_sprite_width_raw_data[_id] * _base_x_scale;
-			    var _cell_height											= palette_sprite_height_raw_data[_id] * _base_y_scale;
-    
-			    palette_sprite_x_pos_data[_id]				= x_offset + (_id % max_row_qty) * (_cell_width + x_gap);
-			    palette_sprite_y_pos_data[_id]				= y_offset + floor(_id / max_row_qty) * (_cell_height + y_gap);
+		// 1. Cache the specific property array for the current state
+		
+		var _state_property = data[_state];
+		var _enabled_property = data[STATE.ENABLED];
 
-			    palette_sprite_angle_data[_id]					= data[_state][PROPERTY.ANGLE];
-			    palette_sprite_alpha_data[_id]				= data[_state][PROPERTY.ALPHA];
-				
-				palette_sound_data[_id]							= data[_state][PROPERTY.SOUND];
-				palette_cursor_data[_id]							= data[_state][PROPERTY.CURSOR];
+		// 2. Fetch raw sprite and dimensions
+		
+		var _sprite = _state_property[PROPERTY.SPRITE];
+		
+		palette_sprite_data[_id]			= _sprite;
+		palette_sprite_index_data[_id] = _id;
+
+		var _width_raw = sprite_get_width(_sprite);
+		var _height_raw = sprite_get_height(_sprite);
+		
+		palette_sprite_width_raw_data[_id]  = _width_raw;
+		palette_sprite_height_raw_data[_id] = _height_raw;
+
+		// 3. Scale math
+		
+		var _x_scale = _state_property[PROPERTY.X_SCALE];
+		var _y_scale = _state_property[PROPERTY.Y_SCALE];
+		
+		palette_sprite_x_scale_data[_id]			= _x_scale;
+		palette_sprite_y_scale_data[_id]			= _y_scale;
+		palette_sprite_width_scale_data[_id]  = _width_raw * _x_scale;
+		palette_sprite_height_scale_data[_id] = _height_raw * _y_scale;
+
+		// 4. Grid Position math (using the ENABLED state base scale)
+		
+		var _cell_width  = _width_raw * _enabled_property[PROPERTY.X_SCALE];
+		var _cell_height = _height_raw * _enabled_property[PROPERTY.Y_SCALE];
+
+		palette_sprite_x_pos_data[_id] = x_offset + (_id % max_row_qty) * (_cell_width + x_gap);
+		palette_sprite_y_pos_data[_id] = y_offset + floor(_id / max_row_qty) * (_cell_height + y_gap);
+
+		// 5. Remaining Misc Properties
+		
+		palette_sprite_angle_data[_id] = _state_property[PROPERTY.ANGLE];
+		palette_sprite_alpha_data[_id] = _state_property[PROPERTY.ALPHA];
+		palette_sound_data[_id]			= _state_property[PROPERTY.SOUND];
+		palette_cursor_data[_id]			= _state_property[PROPERTY.CURSOR];
 	}
 
 	/// @function									get_palette_id
@@ -86,26 +102,22 @@ function palette(_palette_data = PALETTE.EXAMPLE) constructor
 	
 function get_palette_id()
 {
+    // 1. Cache the base scales once BEFORE the loop runs
+	
+    var _base_x = data[STATE.ENABLED][PROPERTY.X_SCALE];
+    var _base_y = data[STATE.ENABLED][PROPERTY.Y_SCALE];
+
     for (var _i = 0; _i < palette_item_qty; ++_i) 
     {
         var _x1 = palette_sprite_x_pos_data[_i];
         var _y1 = palette_sprite_y_pos_data[_i];
-        
-        // Get the base scale from the ENABLED state
+        var _x2 = _x1 + (palette_sprite_width_raw_data[_i] * _base_x);
+		var _y2 = _y1 + (palette_sprite_height_raw_data[_i] * _base_y);
 		
-        var _base_x_scale = data[STATE.ENABLED][PROPERTY.X_SCALE];
-        var _base_y_scale = data[STATE.ENABLED][PROPERTY.Y_SCALE];
-
-        // Calculate the static collision box size
+        // 2. Inline the math directly into the collision check
 		
-        var _cell_width  = palette_sprite_width_raw_data[_i] * _base_x_scale;
-        var _cell_height = palette_sprite_height_raw_data[_i] * _base_y_scale;
-
-        var _x2 = _x1 + _cell_width;
-        var _y2 = _y1 + _cell_height;
-
-        if point_in_rectangle(mouse_x, mouse_y, _x1, _y1, _x2, _y2)
-        {
+        if point_in_rectangle(mouse_x, mouse_y,  _x1, _y1, _x2,  _y2) 
+		{
             return _i;
         }
     }
@@ -122,15 +134,15 @@ function get_palette_id()
 		
 		if _id != undefined // Hover
 		{
-				if  state_data[_id] == STATE.ENABLED	|| state_data[_id] == STATE.ENABLED_CLICK then state_data[_id] = STATE.ENABLED_HOVER;
-				if  state_data[_id] == STATE.DISABLED	|| state_data[_id] == STATE.DISABLED_CLICK then state_data[_id] = STATE.DISABLED_HOVER;
-				if  state_data[_id] == STATE.INSET			|| state_data[_id] ==  STATE.INSET_CLICK then state_data[_id]	= STATE.INSET_HOVER;
+				if  state_data[_id] == STATE.ENABLED	|| state_data[_id] == STATE.ENABLED_CLICK then state_data[_id]		= STATE.ENABLED_HOVER;
+				if  state_data[_id] == STATE.DISABLED	|| state_data[_id] == STATE.DISABLED_CLICK then state_data[_id]	= STATE.DISABLED_HOVER;
+				if  state_data[_id] == STATE.INSET			|| state_data[_id] ==  STATE.INSET_CLICK then state_data[_id]			= STATE.INSET_HOVER;
 					
 			if mouse_check_button(mb_left) // Click
 			{
-				if  state_data[_id] == STATE.ENABLED_HOVER then state_data[_id] = STATE.ENABLED_CLICK;
-				if  state_data[_id] == STATE.DISABLED_HOVER then state_data[_id] = STATE.DISABLED_CLICK;
-				if  state_data[_id] == STATE.INSET_HOVER then state_data[_id] = STATE.INSET_CLICK;
+				if  state_data[_id] == STATE.ENABLED_HOVER then state_data[_id]	= STATE.ENABLED_CLICK;
+				if  state_data[_id] == STATE.DISABLED_HOVER then state_data[_id]	= STATE.DISABLED_CLICK;
+				if  state_data[_id] == STATE.INSET_HOVER then state_data[_id]			= STATE.INSET_CLICK;
 			}
 			
 			if mouse_check_button_pressed(mb_left) // Press
@@ -161,7 +173,10 @@ function get_palette_id()
 			{
 				for (var _i = 0; _i < palette_item_qty; ++_i)
 				{
-					if state_data[_i]  != STATE.DISABLED && state_data[_i] != STATE.INSET && state_data[_i] != STATE.INSET_HOVER && state_data[_i] != STATE.DISABLED_HOVER
+					if state_data[_i]  != STATE.DISABLED					&& 
+						state_data[_i] != STATE.INSET							&& 
+						state_data[_i] != STATE.INSET_HOVER			&& 
+						state_data[_i] != STATE.DISABLED_HOVER
 					{
 						state_data[_i]  = STATE.ENABLED;
 					}

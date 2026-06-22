@@ -27,7 +27,6 @@ enum PALETTE
 
 function spt_palette_properties(_id)
 {
-
 	switch(_id)
 	{
 		case PALETTE.EXAMPLE:
