@@ -36,30 +36,28 @@
 
 ## WHAT IS THIS REPOSITORY FOR ?
 
-This repository contains a Docker source file which when compiled runs a CI workflow endpoint for markdownlint-cli2.
-This allows for linting of Markdown files.
+This repository contains a GameMaker Studio 2 project that generates a palette of interactive buttons that can be used
+for many different projects.
 
 ---
 
 ## WHAT IS THE PURPOSE OF THIS PROJECT ?
 
-- Lint Markdown files.
-- To maintain consistent versioning across CI workflows.
-- Added workflow resilience.
+This project is a part of a larger set of tools designed to speed up building GameMaker projects. It prevents the need
+to re-invent the wheel for each project.
 
 ---
 
 ## WHO IS THIS REPOSITORY FOR ?
 
-Anyone who wishes to lint Markdown as part of their CI pipeline.
+Anyone who wishes to use a set of GUI buttons in their GameMaker project.
 
 ---
 
 ## QUICKSTART
 
-```bash
-docker pull monkeyknuckles/markdownlint-cli2-ci
-```
+Simply create a new palette instance with the following `example = new palette(_palette_data);`. See `DEVELOPER.md` for
+details.
 
 ## ENVIRONMENT DEPENDENCY MANIFESTO
 
