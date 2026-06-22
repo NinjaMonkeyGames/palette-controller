@@ -84,23 +84,34 @@ function palette(_palette_data = PALETTE.EXAMPLE) constructor
 	/// @desc										Get Selected palette ID or return undefined
 	/// @returns {Real}						Returns the selected palette ID
 	
-	function get_palette_id()
-	{
-		for (var _i = 0; _i < palette_item_qty; ++_i) 
-		{
-			var _x1 = palette_sprite_x_pos_data[_i];
-			var _y1 = palette_sprite_y_pos_data[_i];
-			var _x2 = _x1 + palette_sprite_width_scale_data[_i];
-			var _y2 = _y1 + palette_sprite_height_scale_data[_i];
-
-		    if point_in_rectangle(mouse_x, mouse_y, _x1, _y1, _x2, _y2)
-			{
-				return _i;
-			}
-		}
+function get_palette_id()
+{
+    for (var _i = 0; _i < palette_item_qty; ++_i) 
+    {
+        var _x1 = palette_sprite_x_pos_data[_i];
+        var _y1 = palette_sprite_y_pos_data[_i];
+        
+        // Get the base scale from the ENABLED state
 		
-		return undefined;
-	}
+        var _base_x_scale = data[STATE.ENABLED][PROPERTY.X_SCALE];
+        var _base_y_scale = data[STATE.ENABLED][PROPERTY.Y_SCALE];
+
+        // Calculate the static collision box size
+		
+        var _cell_width  = palette_sprite_width_raw_data[_i] * _base_x_scale;
+        var _cell_height = palette_sprite_height_raw_data[_i] * _base_y_scale;
+
+        var _x2 = _x1 + _cell_width;
+        var _y2 = _y1 + _cell_height;
+
+        if point_in_rectangle(mouse_x, mouse_y, _x1, _y1, _x2, _y2)
+        {
+            return _i;
+        }
+    }
+    
+    return undefined;
+}
 
     /// @function			step
     /// @description	Execute step code for palette constructor instance
@@ -171,11 +182,11 @@ function palette(_palette_data = PALETTE.EXAMPLE) constructor
     {
         window_set_cursor(cursor_default);
         
-        var _idx = array_get_index(global.palette_list, target);
+        var _id = array_get_index(global.palette_list, target);
 		
-        if (_idx != -1) 
+        if (_id != -1) 
         {
-            array_delete(global.palette_list, _idx, 1);
+            array_delete(global.palette_list, _id, 1);
         }
     }
 	
@@ -202,5 +213,5 @@ function palette(_palette_data = PALETTE.EXAMPLE) constructor
     array_push(global.palette_list, self);
 }
 
-test = new palette();
-test.destroy();
+new palette();
+
