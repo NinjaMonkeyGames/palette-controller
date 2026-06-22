@@ -4,3 +4,4 @@
 2. Globals must be declared outside function declarations.
 3. Magic numbers are forbidden.
 4. Calculations should never be done in place.
+5. Every `new` instance must have a named reference.

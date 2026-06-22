@@ -4,7 +4,6 @@
 // Changed from ds_list_create() to a native array literal
 
 global.palette_list = [];
-global.last_state = undefined;
 
 enum STATE
 {
@@ -47,17 +46,17 @@ function palette(_palette_data = PALETTE.EXAMPLE) constructor
 	
 	/// @function set_palette_state
 	/// @desc											Switches state of individual palette item (Hovered, clicked etc...)
-	/// @param {Struct}					_state  The state to put the palette item in
-	/// @param {Struct}					_id  Select palette ID to apply the new state to
+	/// @param {Struct}							_state  The state to put the palette item in
+	/// @param {Struct}							_id  Select palette ID to apply the new state to
 	/// @returns {Struct}					
 	
 	function set_palette_state(_state , _id)
 	{
-				palette_sprite_data[_id]							= data[_state, PROPERTY.SPRITE];
+				palette_sprite_data[_id]							= data[_state][PROPERTY.SPRITE];
 			    palette_sprite_index_data[_id]				= _id;
     
-			    palette_sprite_x_scale_data[_id]				= data[_state, PROPERTY.X_SCALE];
-			    palette_sprite_y_scale_data[_id]				= data[_state, PROPERTY.Y_SCALE];
+			    palette_sprite_x_scale_data[_id]				= data[_state][PROPERTY.X_SCALE];
+			    palette_sprite_y_scale_data[_id]				= data[_state][PROPERTY.Y_SCALE];
     
 			    palette_sprite_width_raw_data[_id]        = sprite_get_width(palette_sprite_data[_id]);
 			    palette_sprite_height_raw_data[_id]       = sprite_get_height(palette_sprite_data[_id]);
@@ -65,8 +64,8 @@ function palette(_palette_data = PALETTE.EXAMPLE) constructor
 			    palette_sprite_width_scale_data[_id]      = palette_sprite_width_raw_data[_id] * palette_sprite_x_scale_data[_id];
 			    palette_sprite_height_scale_data[_id]     = palette_sprite_height_raw_data[_id] * palette_sprite_y_scale_data[_id];
     
-			    var _base_x_scale										= data[STATE.ENABLED, PROPERTY.X_SCALE];
-			    var _base_y_scale										= data[STATE.ENABLED, PROPERTY.Y_SCALE];
+			    var _base_x_scale										= data[STATE.ENABLED][PROPERTY.X_SCALE];
+			    var _base_y_scale										= data[STATE.ENABLED][PROPERTY.Y_SCALE];
     
 			    var _cell_width											= palette_sprite_width_raw_data[_id] * _base_x_scale;
 			    var _cell_height											= palette_sprite_height_raw_data[_id] * _base_y_scale;
@@ -74,11 +73,11 @@ function palette(_palette_data = PALETTE.EXAMPLE) constructor
 			    palette_sprite_x_pos_data[_id]				= x_offset + (_id % max_row_qty) * (_cell_width + x_gap);
 			    palette_sprite_y_pos_data[_id]				= y_offset + floor(_id / max_row_qty) * (_cell_height + y_gap);
 
-			    palette_sprite_angle_data[_id]					= data[_state, PROPERTY.ANGLE];
-			    palette_sprite_alpha_data[_id]				= data[_state, PROPERTY.ALPHA];
+			    palette_sprite_angle_data[_id]					= data[_state][PROPERTY.ANGLE];
+			    palette_sprite_alpha_data[_id]				= data[_state][PROPERTY.ALPHA];
 				
-				palette_sound_data[_id]							= data[_state, PROPERTY.SOUND];
-				palette_cursor_data[_id]							= data[_state, PROPERTY.CURSOR];
+				palette_sound_data[_id]							= data[_state][PROPERTY.SOUND];
+				palette_cursor_data[_id]							= data[_state][PROPERTY.CURSOR];
 	}
 
 	/// @function									get_palette_id
@@ -164,6 +163,22 @@ function palette(_palette_data = PALETTE.EXAMPLE) constructor
 		update_palette();
 	}
 	
+	/// @function            destroy
+    /// @description		Clean up references and reset system state.
+    /// @param {Struct} [target=self] Optional specific palette struct to destroy
+    
+    function destroy(target = self)
+    {
+        window_set_cursor(cursor_default);
+        
+        var _idx = array_get_index(global.palette_list, target);
+		
+        if (_idx != -1) 
+        {
+            array_delete(global.palette_list, _idx, 1);
+        }
+    }
+	
     /// @function			draw
     /// @description	Execute draw code for palette constructor instance
 	
@@ -184,8 +199,8 @@ function palette(_palette_data = PALETTE.EXAMPLE) constructor
 				palette_sprite_alpha_data[_i]);
         }
     }
-	
     array_push(global.palette_list, self);
 }
 
-new palette();
+test = new palette();
+test.destroy();
