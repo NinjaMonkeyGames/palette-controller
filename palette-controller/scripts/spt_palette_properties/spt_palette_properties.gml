@@ -146,7 +146,7 @@ function spt_palette_properties(_id)
 			
 			data[STATE.INSET][PROPERTY.SOUND] = undefined;
 			data[STATE.INSET_HOVER][PROPERTY.SOUND] = snd_hover;
-			data[STATE.INSET_CLICK][PROPERTY.SOUND] = snd_pop;
+			data[STATE.INSET_CLICK][PROPERTY.SOUND] = snd_inset;
 			
 			// DEFAULT CURSOR
 			
@@ -184,6 +184,7 @@ function spt_palette_properties(_id)
 			}
 			
 			state_data[0] = STATE.DISABLED;
+			state_data[34] = STATE.DISABLED;
 			
 			state_data[3] = STATE.INSET;
 			state_data[29] = STATE.INSET;

@@ -23,8 +23,8 @@ enum STATE
 /// @function palette(_palette_data)
 /// @constructor
 /// @desc											Generates a palette (set of buttons) based on parameters.
-/// @param {Struct}					_palette_data  Data containing palette properties
-/// @returns {Struct}					A new palette struct
+/// @param {Struct}							_palette_data  Data containing palette properties
+/// @returns {Struct}						A new palette struct
 
 function palette(_palette_data = PALETTE.EXAMPLE) constructor
 {
@@ -78,7 +78,7 @@ function palette(_palette_data = PALETTE.EXAMPLE) constructor
 		palette_sprite_x_scale_data[_id]			= _x_scale;
 		palette_sprite_y_scale_data[_id]			= _y_scale;
 		palette_sprite_width_scale_data[_id]  = _width_raw * _x_scale;
-		palette_sprite_height_scale_data[_id] = _height_raw * _y_scale;
+		palette_sprite_height_scale_data[_id]	= _height_raw * _y_scale;
 
 		// 4. Grid Position math (using the ENABLED state base scale)
 		
@@ -154,7 +154,10 @@ function get_palette_id()
 					if  state_data[_id] == STATE.ENABLED_CLICK then state_data[_id] = STATE.INSET;
 				}
 				
-				spt_palette_actions(PALETTE.EXAMPLE, _id);  // Call palette action code for selected palette ID
+				if state_data[_id] != STATE.DISABLED_HOVER && state_data[_id] != STATE.DISABLED_CLICK
+				{
+					spt_palette_actions(PALETTE.EXAMPLE, _id);  // Call palette action code for selected palette ID
+				}
 			}
 			
 			if last_sound != palette_sound_data[_id]	
@@ -189,7 +192,7 @@ function get_palette_id()
 		update_palette();
 	}
 	
-	/// @function            destroy
+	/// @function				destroy
     /// @description		Clean up references and reset system state.
     /// @param {Struct} [target=self] Optional specific palette struct to destroy
     
