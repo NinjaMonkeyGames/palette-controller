@@ -131,64 +131,67 @@ function get_palette_id()
 	function step()
     {
 		var _id = get_palette_id() ;
+		var _has_focus = has_focus();
 		
-		if _id != undefined // Hover
+		if _has_focus
 		{
-				if  state_data[_id] == STATE.ENABLED	|| state_data[_id] == STATE.ENABLED_CLICK then state_data[_id]		= STATE.ENABLED_HOVER;
-				if  state_data[_id] == STATE.DISABLED	|| state_data[_id] == STATE.DISABLED_CLICK then state_data[_id]	= STATE.DISABLED_HOVER;
-				if  state_data[_id] == STATE.INSET			|| state_data[_id] ==  STATE.INSET_CLICK then state_data[_id]			= STATE.INSET_HOVER;
+			if _id != undefined // Hover
+			{
+					if  state_data[_id] == STATE.ENABLED	|| state_data[_id] == STATE.ENABLED_CLICK then state_data[_id]		= STATE.ENABLED_HOVER;
+					if  state_data[_id] == STATE.DISABLED	|| state_data[_id] == STATE.DISABLED_CLICK then state_data[_id]	= STATE.DISABLED_HOVER;
+					if  state_data[_id] == STATE.INSET			|| state_data[_id] ==  STATE.INSET_CLICK then state_data[_id]			= STATE.INSET_HOVER;
 					
-			if mouse_check_button(mb_left) // Click
-			{
-				if  state_data[_id] == STATE.ENABLED_HOVER then state_data[_id]	= STATE.ENABLED_CLICK;
-				if  state_data[_id] == STATE.DISABLED_HOVER then state_data[_id]	= STATE.DISABLED_CLICK;
-				if  state_data[_id] == STATE.INSET_HOVER then state_data[_id]			= STATE.INSET_CLICK;
-			}
-			
-			if mouse_check_button_pressed(mb_left) // Press
-			{
-				if  state_data[_id] == STATE.INSET_CLICK then state_data[_id] = STATE.ENABLED;
-				
-				if inset_enabled[_id] == true
+				if mouse_check_button(mb_left) // Click
 				{
-					if  state_data[_id] == STATE.ENABLED_CLICK then state_data[_id] = STATE.INSET;
+					if  state_data[_id] == STATE.ENABLED_HOVER then state_data[_id]	= STATE.ENABLED_CLICK;
+					if  state_data[_id] == STATE.DISABLED_HOVER then state_data[_id]	= STATE.DISABLED_CLICK;
+					if  state_data[_id] == STATE.INSET_HOVER then state_data[_id]			= STATE.INSET_CLICK;
 				}
-				
-				if state_data[_id] != STATE.DISABLED_HOVER && state_data[_id] != STATE.DISABLED_CLICK
-				{
-					spt_palette_actions(PALETTE.EXAMPLE, _id);  // Call palette action code for selected palette ID
-				}
-			}
 			
-			if last_sound != palette_sound_data[_id]	
-			{
-				if palette_sound_data[_id] != undefined then audio_play_sound(palette_sound_data[_id], 0, false);
-			}
-				last_sound = palette_sound_data[_id];
-				
-			window_set_cursor(palette_cursor_data[_id]);
-		}
-			else // No hover
-		{
-			window_set_cursor(cursor_default); 
-			
-			if !mouse_check_button(mb_left)
-			{
-				for (var _i = 0; _i < palette_item_qty; ++_i)
+				if mouse_check_button_pressed(mb_left) // Press
 				{
-					if state_data[_i]  != STATE.DISABLED					&& 
-						state_data[_i] != STATE.INSET							&& 
-						state_data[_i] != STATE.INSET_HOVER			&& 
-						state_data[_i] != STATE.DISABLED_HOVER
+					if  state_data[_id] == STATE.INSET_CLICK then state_data[_id] = STATE.ENABLED;
+				
+					if inset_enabled[_id] == true
 					{
-						state_data[_i]  = STATE.ENABLED;
+						if  state_data[_id] == STATE.ENABLED_CLICK then state_data[_id] = STATE.INSET;
 					}
 				
-					if state_data[_i]  == STATE.INSET_HOVER then state_data[_i]  = STATE.INSET;
+					if state_data[_id] != STATE.DISABLED_HOVER && state_data[_id] != STATE.DISABLED_CLICK
+					{
+						spt_palette_actions(PALETTE.EXAMPLE, _id);  // Call palette action code for selected palette ID
+					}
+				}
+			
+				if last_sound != palette_sound_data[_id]	
+				{
+					if palette_sound_data[_id] != undefined then audio_play_sound(palette_sound_data[_id], 0, false);
+				}
+					last_sound = palette_sound_data[_id];
+				
+				window_set_cursor(palette_cursor_data[_id]);
+			}
+				else // No hover
+			{
+				window_set_cursor(cursor_default); 
+			
+				if !mouse_check_button(mb_left)
+				{
+					for (var _i = 0; _i < palette_item_qty; ++_i)
+					{
+						if state_data[_i]  != STATE.DISABLED					&& 
+						   state_data[_i] != STATE.INSET							&& 
+						   state_data[_i] != STATE.INSET_HOVER				&& 
+						   state_data[_i] != STATE.DISABLED_HOVER
+						{
+							state_data[_i]  = STATE.ENABLED;
+						}
+				
+						if state_data[_i]  == STATE.INSET_HOVER then state_data[_i]  = STATE.INSET;
+					}
 				}
 			}
 		}
-		
 		update_palette();
 	}
 	
@@ -207,6 +210,30 @@ function get_palette_id()
             array_delete(global.palette_list, _id, 1);
         }
     }
+	
+	/// @function has_focus()
+	/// @desc Checks if this palette is the highest-level palette under the mouse
+	/// @returns {Bool}
+	
+	function has_focus()
+	{
+	    // Loop backwards through the global list (top-most palettes first)
+		
+	    for (var _i = array_length(global.palette_list) - 1; _i >= 0; --_i)
+	    {
+	        var _instance = global.palette_list[_i];
+        
+	        // Find the first palette in the stack that the mouse is actually touching
+			
+	        if (_instance.get_palette_id() != undefined)
+	        {
+	            // If that palette is ME, I have focus. If it's someone else, I don't!
+				
+	            return (_instance == self);
+	        }
+	    }
+	    return true; // No palettes are being hovered at all
+	}
 	
     /// @function			draw
     /// @description	Execute draw code for palette constructor instance
@@ -231,5 +258,8 @@ function get_palette_id()
     array_push(global.palette_list, self);
 }
 
-new palette();
+example = new palette(PALETTE.EXAMPLE);
 
+test = new palette(PALETTE.EXAMPLE);
+
+test.x_offset = 500;

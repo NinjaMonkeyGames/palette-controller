@@ -175,7 +175,7 @@ function spt_palette_properties(_id)
 			palette_item_qty = sprite_get_number(data[STATE.ENABLED][PROPERTY.SPRITE]);
 			max_row_qty = 7;
 			
-			cursor_default = window_get_cursor();
+			cursor_default = cr_arrow;
 			
 			for (var _i = 0; _i < palette_item_qty; ++_i)
 			{

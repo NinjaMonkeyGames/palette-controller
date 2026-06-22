@@ -113,6 +113,7 @@ repository and how to update the documentation correctly.
       - [Attribute Table — \[README.md\]](#attribute-table--readmemd)
       - [Asset Purpose — \[README\]](#asset-purpose--readme)
       - [Asset Contents Description — \[README\]](#asset-contents-description--readme)
+  - [CODE STRUCTURE](#code-structure)
   - [CONTACT INFORMATION](#contact-information)
   - [COPYRIGHT](#copyright)
 
@@ -122,14 +123,15 @@ repository and how to update the documentation correctly.
 
 ## Target Audience
 
-This document is for developers actively contributing to this project.
+This repository contains a GameMaker Studio 2 project that generates a palette of interactive buttons that can be used
+for many different projects.
 
 ---
 
 ## Project Purpose
 
-The purpose of this project is to provide a way to lint markdown files in a CI workflow. This way dependency versions
-can be pinned to ensure a consistent and reliable environment.
+This project is a part of a larger set of tools designed to speed up building GameMaker projects. It prevents the need
+to re-invent the wheel for each project.
 
 ## Project Assets
 
@@ -728,6 +730,10 @@ To provide a quick overview of the project scope.
 [Back to top](#Palette Controller Object)
 
 ---
+
+## CODE STRUCTURE
+
+
 
 ## CONTACT INFORMATION
 
