@@ -36,8 +36,7 @@
 
 ## WHAT IS THIS REPOSITORY FOR ?
 
-This repository contains a GameMaker Studio 2 project that generates a palette of interactive buttons that can be used
-for many different projects.
+This repository contains a GameMaker Studio 2 project that generates a 2D grid based on provided arguments.
 
 ---
 
@@ -108,7 +107,6 @@ Local tool versions.
 
 | Tool                           | Version               |
 |--------------------------------|-----------------------|
-| Docker                         | 29.2.1, build a5c7197 |
 | Node                           | 24.11.1               |
 | GitHub Desktop                 | 3.4.9-linux1 (x64)    |
 | Git                            | 2.54.0                |
